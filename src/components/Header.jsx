@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleDarkMode } from "../store/store";
+import { toggleDarkMode } from "../redux/store";
 import { Link } from "react-router-dom";
 import { FaDownload, FaRegHeart } from "react-icons/fa";
 import { CiDark, CiLight } from "react-icons/ci";
@@ -15,7 +15,7 @@ function Header() {
   return (
     <div
       className={`${
-        isDarkMode ? "bg-gray-950 text-white" : "bg-white text-black"
+        isDarkMode ? "bg-gray-950 text-white" : "bg-slate-100 text-black"
       }`}
     >
       <header className="container max-w-[1440px] mx-auto flex justify-between items-center p-2">
@@ -72,11 +72,13 @@ function Header() {
           />
 
           <div className="relative">
-            <FaRegHeart
-              className={`w-7 h-7 cursor-pointer rounded-md ${
-                isDarkMode ? "text-white dark:text-gray-300" : "text-black"
-              }`}
-            />
+            <Link to={"/download-image"}>
+              <FaRegHeart
+                className={`w-7 h-7 cursor-pointer rounded-md ${
+                  isDarkMode ? "text-white dark:text-gray-300" : "text-black"
+                }`}
+              />
+            </Link>
             {likedImages.length > 0 && (
               <Link to={"/liked-image"}>
                 <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">

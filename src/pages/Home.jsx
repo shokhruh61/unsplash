@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch, FaHeart } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function Home() {
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("all");
+  const dispatch = useDispatch();
   const [likedImages, setLikedImages] = useState(() => {
     return JSON.parse(localStorage.getItem("likedImages")) || [];
   });
@@ -29,19 +30,16 @@ function Home() {
     }
   };
 
-  // Component yuklanganda yoki qidiruv o'zgarganda API chaqirish
   useEffect(() => {
     fetchImages(searchQuery, page);
   }, [searchQuery, page]);
 
-  // Qidiruvni boshlash funksiyasi
   const handleSearch = (e) => {
     e.preventDefault();
     setPage(1);
     fetchImages(searchQuery, 1);
   };
 
-  // Like bosish funksiyasi
   const toggleLike = (image) => {
     let updatedLikes;
     if (likedImages.some((item) => item.id === image.id)) {
@@ -59,7 +57,6 @@ function Home() {
         isDarkMode ? "bg-gray-950 text-white" : "bg-white text-black"
       }`}
     >
-      {/* Qidiruv input */}
       <div className="flex justify-center pt-5">
         <form onSubmit={handleSearch} className="w-[768px] flex">
           <input
@@ -78,7 +75,6 @@ function Home() {
         </form>
       </div>
 
-      {/* Rasm Galereyasi */}
       <div className="max-w-[1440px] mx-auto p-4">
         <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 gap-1 space-y-4">
           {images.map((image) => (
@@ -89,22 +85,29 @@ function Home() {
                 className="w-full rounded-lg shadow-lg cursor-pointer"
               />
 
-              {/* Like tugmasi */}
               <button
-                className={`absolute top-2 right-2 p-2 rounded-full bg-black/50 hover:bg-black/70 transition ${
+                className={`absolute top-2 right-2 p-2 rounded-full bg-black/50 hover:bg-black/70 transition-opacity opacity-0 group-hover:opacity-100 ${
                   likedImages.some((item) => item.id === image.id)
                     ? "text-red-500"
                     : "text-white"
                 }`}
-                onClick={() => toggleLike(image)}
+                onClick={() => dispatch(toggleLike(image))}
               >
                 <FaHeart className="w-5 h-5" />
               </button>
+
+              <div className="absolute bottom-2 left-2 right-2 flex items-center bg-black/60 p-2 rounded-lg text-white text-sm opacity-0 transition-opacity group-hover:opacity-100">
+                <img
+                  src={image.user.profile_image.small}
+                  alt={image.user.name}
+                  className="w-6 h-6 rounded-full mr-2"
+                />
+                <span className="">{image.user.name}</span>
+              </div>
             </div>
           ))}
         </div>
 
-        {/* "Read more" tugmasi */}
         <div className="flex justify-center mt-6">
           <button
             onClick={() => setPage((prev) => prev + 1)}

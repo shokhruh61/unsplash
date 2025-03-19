@@ -7,7 +7,7 @@ import Contact from "./pages/Contact";
 import LikedImage from "./pages/LikedImage";
 import Downloadimage from "./pages/Download";
 import { Provider, useSelector } from "react-redux";
-import store from "./store/store";
+import store from "./redux/store";
 
 function App() {
   const isDarkMode = useSelector((state) => state.darkMode.isDark);
