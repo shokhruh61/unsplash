@@ -8,6 +8,7 @@ import LikedImage from "./pages/LikedImage";
 import Downloadimage from "./pages/Download";
 import { Provider, useSelector } from "react-redux";
 import store from "./redux/store";
+import ImageDetail from "./pages/ImageDetail";
 
 function App() {
   const isDarkMode = useSelector((state) => state.darkMode.isDark);
@@ -64,6 +65,7 @@ function App() {
               </MainLayout>
             }
           />
+          <Route path="/detail/:id" element={<ImageDetail />} />
         </Routes>
       </div>
     </Provider>
