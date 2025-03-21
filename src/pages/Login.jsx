@@ -6,7 +6,7 @@ function Login() {
     <div>
       <form className="flex">
         <div className="w-[40%] bg-[url('https://picsum.photos/800/1200')] bg-cover bg-center"></div>
-        <div className="flex min-h-screen w-[60%] flex-col items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="flex min-h-screen w-[60%] flex-col items-center justify-center">
           <h1 className="mb-4 text-2xl font-bold">Login</h1>
           <input
             type="email"

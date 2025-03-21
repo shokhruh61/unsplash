@@ -8,7 +8,7 @@ function Register() {
     <div>
       <form className="flex" method="post">
         <div className="w-[40%] bg-[url('https://picsum.photos/800/1200')] bg-cover bg-center"></div>
-        <div className="flex min-h-screen w-[60%] flex-col items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="flex min-h-screen w-[60%] flex-col items-center gap-3 justify-center p-5">
           <h1 className="mb-5 text-center text-3xl font-medium">Register</h1>
 
           <label className="input-bordered input flex w-96 items-center gap-2">

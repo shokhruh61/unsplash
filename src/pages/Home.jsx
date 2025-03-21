@@ -1,52 +1,61 @@
-import React, { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+// import { useEffect, useState } from "react";
+// import { useFetch } from "../hooks/useFetch";
+import { useActionData } from "react-router-dom";
+import { ImageContainer, Search } from "../components";
+
+export const action = async ({ request }) => {
+  let formData = await request.formData();
+  let search = formData.get("search");
+  return search;
+};
 import { useFetch } from "../hooks/useFetch";
-import ImagesContainer from "../components/ImagesContainer";
-
+import { useEffect, useRef, useState } from "react";
 function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [page, setPage] = useState(1);
   const [allImages, setAllImages] = useState([]);
+  const searchParamFromAction = useActionData();
+  const [pageParam, setPageParam] = useState(1);
 
+  const prevSearchParam = useRef(searchParamFromAction);
   const { data, isPending, error } = useFetch(
-    `https://api.unsplash.com/photos?client_id=${import.meta.env.VITE_ACCESS_KEY}&query=all&page=${page}`,
+    `https://api.unsplash.com/search/photos?client_id=TfijlH2P6tfgB_kzepCuV_-ji3Pd7waZSo1Gx4SDBbE&query=${searchParamFromAction ?? "all"}&page=${pageParam}`,
   );
 
   useEffect(() => {
     if (data && data.results) {
-      setAllImages(data.results);
+      setAllImages((prevImage) => {
+        return pageParam === 1 ? data.results : [...prevImage, ...data.results];
+      });
     }
   }, [data]);
-  if (isPending) {
-    return <h2>Loading...</h2>;
-  }
+
+  useEffect(() => {
+    if (searchParamFromAction == prevSearchParam.current) {
+      setAllImages([]);
+      setPageParam(1);
+    }
+  }, [searchParamFromAction]);
+
   if (error) {
-    return <h2>Error: {error}</h2>;
+    <div>Error: {error}</div>;
   }
 
   return (
-    <div className="p-4">
-      <div className="flex items-center">
-        <label className="input-bordered input mx-auto mb-4 mt-4 flex max-w-96 items-center gap-2">
-          <input
-            type="text"
-            className="grow"
-            placeholder="Search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && setPage(1)}
-          />
-          <FaSearch className="h-5 w-5" />
-          <button
-            onClick={() => setPage(1)}
-            className="rounded-md bg-info px-3 py-2 text-white md:hidden"
-          >
-            Search
-          </button>
-        </label>
+    <div className="align-elements">
+      <div className="my-10 mb-5 mt-5 flex items-center justify-center gap-2">
+        <Search />
       </div>
-
-      {allImages.length > 0 && <ImagesContainer images={allImages} />}
+      {isPending && <h1>Loading ...</h1>}
+      {allImages.length > 0 && <ImageContainer images={allImages} />}
+      <div className="my-10 text-center">
+        <button
+          onClick={() => {
+            setPageParam(pageParam + 1);
+          }}
+          className="btn btn-primary w-[90%] text-xl"
+        >
+          Read more
+        </button>
+      </div>
     </div>
   );
 }

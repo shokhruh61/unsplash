@@ -1,12 +1,14 @@
-import React from "react";
-import Header from "../components/Header";
 import Footer from "../components/footer";
+import Navbar from "../components/Navbar";
+import { Outlet } from "react-router-dom";
 
-function MainLayout({ children }) {
+function MainLayout() {
   return (
     <div>
-      <Header />
-      {children}
+      <Navbar />
+      <main>
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );
