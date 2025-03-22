@@ -17,7 +17,6 @@ const navLinks = [
 function NavLinks() {
   return (
     <>
-      {" "}
       {navLinks.map((link) => {
         return (
           <li key={link.path}>
