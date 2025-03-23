@@ -1,33 +1,31 @@
 import { createContext, useReducer } from "react";
+import LikedImages from "../pages/LikedImages";
 
 export const GlobalContext = createContext();
-
 const changeState = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case "ADD_TO_LIKED":
+    case "LIKE":
       return {
         ...state,
-        LikedImages: [...state.LikedImages, payload], // ✅ Liked image qo'shish
+        LikedImages: [...state.LikedImages, payload],
       };
 
-    case "REMOVE_FROM_LIKED":
+    case "UNLIKE":
       return {
         ...state,
-        LikedImages: state.LikedImages.filter((img) => img.id !== payload.id), // ✅ Liked image o‘chirish
+        LikedImages: state.LikedImages.filter((image) => image.id != payload),
       };
 
     default:
       return state;
   }
 };
-
 export function GlobalContextProvider({ children }) {
   const [state, dispatch] = useReducer(changeState, {
-    LikedImages: [], // Boshlang‘ich state
+    LikedImages: [],
   });
-
   return (
     <GlobalContext.Provider value={{ ...state, dispatch }}>
       {children}

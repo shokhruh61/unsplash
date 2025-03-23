@@ -17,7 +17,7 @@ function Home() {
 
   const prevSearchParam = useRef(searchParamFromAction);
   const { data, isPending, error } = useFetch(
-    `https://api.unsplash.com/search/photos?client_id=${import.meta.env.VITE_ACCESS_TOKEN}&query=${searchParamFromAction ?? "all"}&page=${pageParam}`,
+    `https://api.unsplash.com/search/photos?client_id=TfijlH2P6tfgB_kzepCuV_-ji3Pd7waZSo1Gx4SDBbE&query=${searchParamFromAction ?? "all"}&page=${pageParam}`,
   );
 
   useEffect(() => {
