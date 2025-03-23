@@ -1,6 +1,6 @@
 import Masonry from "react-masonry-css";
+import Image from "./Image";
 
-import { Image } from "./";
 function ImageContainer({ images }) {
   const breakpointObj = {
     default: 4,
@@ -8,15 +8,16 @@ function ImageContainer({ images }) {
     700: 2,
     500: 1,
   };
+
   return (
     <Masonry
       breakpointCols={breakpointObj}
       className="flex gap-4 p-5"
       columnClassName="masonry-grid_column"
     >
-      {images.map((image) => {
-        return <Image key={image.id} image={image} />;
-      })}
+      {images.map((image) => (
+        <Image key={image.id} image={image} />
+      ))}
     </Masonry>
   );
 }

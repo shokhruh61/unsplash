@@ -2,16 +2,23 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaDownload, FaHeart, FaMoon, FaSun } from "react-icons/fa";
 import { FcStackOfPhotos } from "react-icons/fc";
+import { useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { NavLinks } from "./";
 
-const themeFromLoaclStorage = () => {
+const themeFromLocalStorage = () => {
   return localStorage.getItem("theme") || "winter";
 };
+
 function Navbar() {
-  const [theme, setTheme] = useState(themeFromLoaclStorage());
+  const [theme, setTheme] = useState(themeFromLocalStorage());
+  const likedImages =
+    useSelector((state) => state.likedImages.likedImages) || [];
+  const likedCount = likedImages.length || 0;
 
   const toggleTheme = () => {
-    const newTheme = theme == "winter" ? "dark" : "winter";
+    const newTheme = theme === "winter" ? "dark" : "winter";
     setTheme(newTheme);
   };
 
@@ -19,62 +26,66 @@ function Navbar() {
     localStorage.setItem("theme", theme);
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
-  return (
-    <header className="bg-base-300">
-      <div className="container navbar mx-auto max-w-[1440px]">
-        <div className="navbar-start">
-          <Link to={"/"} className="hidden md:flex">
-            <FcStackOfPhotos className="h-10 w-10" />
-          </Link>
 
-          <div className="dropdown md:hidden">
-            <div tabIndex={0} role="button">
+  return (
+    <>
+      <header className="bg-base-300">
+        <div className="container navbar mx-auto max-w-[1440px]">
+          <div className="navbar-start">
+            <Link to={"/"} className="hidden md:flex">
               <FcStackOfPhotos className="h-10 w-10" />
+            </Link>
+            <div className="dropdown md:hidden">
+              <div tabIndex={0} role="button">
+                <FcStackOfPhotos className="h-10 w-10" />
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu z-[1] w-52 rounded-box bg-base-100 p-2 shadow"
+              >
+                <NavLinks />
+              </ul>
             </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu z-[1] w-52 rounded-box bg-base-100 p-2 shadow"
-            >
+          </div>
+          <div className="navbar-center hidden md:flex">
+            <ul className="menu menu-horizontal rounded-box">
               <NavLinks />
             </ul>
           </div>
-        </div>
-        <div className="navbar-center hidden md:flex">
-          <ul className="menu menu-horizontal rounded-box">
-            <NavLinks />
-          </ul>
-        </div>
-        <div className="navbar-end flex items-center gap-3">
-          <div className="indicator">
-            <span className="badge badge-secondary badge-sm indicator-item">
-              0
-            </span>
-            <FaDownload className="h-6 w-6" />
-          </div>
-          <Link to={"/liked-images"}>
+          <div className="navbar-end flex items-center gap-5">
             <div className="indicator">
               <span className="badge badge-secondary badge-sm indicator-item">
                 0
               </span>
-
-              <FaHeart className="h-6 w-6" />
+              <FaDownload className="h-6 w-6" />
             </div>
-          </Link>
-          <label className="swap swap-rotate">
-            <input
-              type="checkbox"
-              className="theme-controller"
-              value="synthwave"
-              onClick={toggleTheme}
-            />
 
-            <FaSun className="swap-off h-6 w-6 fill-current" />
+            <Link to={"/liked-images"}>
+              <div className="indicator">
+                <span className="badge badge-secondary badge-sm indicator-item">
+                  {likedCount}
+                </span>
+                <FaHeart className="h-6 w-6" />
+              </div>
+            </Link>
 
-            <FaMoon className="swap-on h-6 w-6 fill-current" />
-          </label>
+            <label className="swap swap-rotate">
+              <input
+                type="checkbox"
+                className="theme-controller"
+                value="synthwave"
+                onClick={toggleTheme}
+              />
+              <FaSun className="swap-off h-6 w-6 fill-current" />
+              <FaMoon className="swap-on h-6 w-6 fill-current" />
+            </label>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* ToastContainerni qo'shish */}
+      <ToastContainer position="top-right" autoClose={3000} />
+    </>
   );
 }
 

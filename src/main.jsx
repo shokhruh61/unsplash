@@ -1,10 +1,15 @@
-import { createRoot } from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { store } from "./redux/store"; // ✅ Redux Toolkit store
+import { GlobalContextProvider } from "./context/GlobalContext"; // ✅ Context Provider
 import "./index.css";
-import App from "./App.jsx";
-import { GlobalContextProvider } from "./context/GlobalContext.jsx";
+import App from "./App";
 
-createRoot(document.getElementById("root")).render(
-  <GlobalContextProvider>
-    <App />
-  </GlobalContextProvider>,
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <Provider store={store}>
+    <GlobalContextProvider>
+      <App />
+    </GlobalContextProvider>
+  </Provider>,
 );
