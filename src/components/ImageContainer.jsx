@@ -10,7 +10,6 @@ function ImageContainer({ images }) {
   };
   return (
     <Masonry
-      co
       breakpointCols={breakpointObj}
       className="flex gap-4 p-5"
       columnClassName="masonry-grid_column"
