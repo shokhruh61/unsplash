@@ -1,8 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home, About, Contact, Likedimages } from "./pages";
-
 import MainLayout from "./layouts/MainLayout";
-
 import { action as HomeAction } from "./pages/Home";
 
 function App() {
@@ -31,7 +29,11 @@ function App() {
       ],
     },
   ]);
-  return <RouterProvider router={routes} />;
+
+  return (
+      <RouterProvider router={routes} />
+    
+  );
 }
 
 export default App;
