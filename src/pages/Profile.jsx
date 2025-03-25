@@ -14,7 +14,7 @@ const Profile = () => {
   useEffect(() => {
     if (loading) return;
     if (!user) {
-      navigate("/login");
+      navigate("/contact");
       return;
     }
 
@@ -65,7 +65,7 @@ const Profile = () => {
         <div className="mt-5 flex flex-col justify-center rounded-xl bg-gray-100 p-3 sm:p-5">
           <div className="flex h-[150px] w-[150px]">
             <img
-              src={userDetails?.img || "https://picsum.photos/50/50"}
+              src={userDetails?.img || "https://via.placeholder.com/150"}
               alt="user-img"
               className="-mt-[1px] h-[100%] w-[100%] rounded-full"
             />
