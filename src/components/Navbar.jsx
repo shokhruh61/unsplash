@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 import { FaDownload, FaHeart, FaMoon, FaSun } from "react-icons/fa";
 import { FcStackOfPhotos } from "react-icons/fc";
 import { NavLinks } from "./";
+import { useSelector } from "react-redux"; // ✅ Redux'dan like sonini olish
 
 const themeFromLoaclStorage = () => {
   return localStorage.getItem("theme") || "winter";
 };
+
 function Navbar() {
   const [theme, setTheme] = useState(themeFromLoaclStorage());
+  const likedImages = useSelector((state) => state.likedImages); // ✅ Like bosilgan rasmlar
 
   const toggleTheme = () => {
     const newTheme = theme === "winter" ? "dark" : "winter";
@@ -19,6 +22,7 @@ function Navbar() {
     localStorage.setItem("theme", theme);
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
+
   return (
     <header className="bg-base-300">
       <div className="container navbar mx-auto max-w-[1440px]">
@@ -44,20 +48,23 @@ function Navbar() {
             <NavLinks />
           </ul>
         </div>
-        <div className="navbar-end flex items-center gap-3">
+        <div className="navbar-end flex items-center gap-5">
           <div className="indicator">
             <span className="badge badge-secondary badge-sm indicator-item">
               0
             </span>
-            <FaDownload className="h-6 w-6" />
+            <button className="">
+              <FaDownload className="h-6 w-6" />
+            </button>
           </div>
           <Link to={"/liked-images"}>
             <div className="indicator">
               <span className="badge badge-secondary badge-sm indicator-item">
-                0
+                {likedImages.length}
               </span>
-
-              <FaHeart className="h-6 w-6" />
+              <button>
+                <FaHeart className="h-6 w-6" />
+              </button>
             </div>
           </Link>
           <label className="swap swap-rotate">
