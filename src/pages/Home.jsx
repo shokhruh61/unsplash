@@ -16,7 +16,7 @@ function Home() {
   const [page, setPage] = useState(1);
 
   const { data, isPending, error } = useFetch(
-    `https://api.unsplash.com/search/photos?client_id=${import.meta.env.VITE_ACCESS_TOKEN}&query=${searchParam || "all"}&page=${page}`,
+    `https://api.unsplash.com/search/photos?client_id=TfijlH2P6tfgB_kzepCuV_-ji3Pd7waZSo1Gx4SDBbE&query=${searchParam || "all"}&page=${page}`,
   );
 
   useEffect(() => {
