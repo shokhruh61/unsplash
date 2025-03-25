@@ -22,15 +22,12 @@ function Home() {
   useEffect(() => {
     if (data?.results) {
       setImages((prev) =>
-        page === 1 ? data.results : [...prev, ...data.results],
+        page === 1 && prev.length === 0
+          ? data.results
+          : [...prev, ...data.results],
       );
     }
-  }, [data, page]);
-
-  useEffect(() => {
-    setImages([]);
-    setPage(1);
-  }, [searchParam]);
+  }, [data]);
 
   return (
     <div className="container mx-auto px-4">
