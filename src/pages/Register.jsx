@@ -17,13 +17,13 @@ const Register = () => {
   const handlesubmit = (e) => {
     e.preventDefault();
     if (fullName === "") {
-      toast.error("Full Name is required!");
+      toast.error("to'liq ismingizni kiriting");
     } else if (password === "") {
-      toast.error("Password is required!");
+      toast.error("parolni kriting");
     } else if (password.length < 8) {
-      toast.error("Password must atleast be of 8 characters!");
+      toast.error("parol eng kamida 8ta belgidan iborat bolsin!");
     } else if (email === "") {
-      toast.error("Email-id is required!");
+      toast.error("email manizilni kriting!");
     } else {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {

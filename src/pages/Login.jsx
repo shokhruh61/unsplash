@@ -22,33 +22,33 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email) {
-      toast.error("Email is required!");
+      toast.error("Email kiritish shart!");
       return;
     }
     if (!password) {
-      toast.error("Password is required!");
+      toast.error("Parol kritish shart!");
       return;
     }
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Successfully logged in!");
+      toast.success("Muvaffaqiyatli tizimga kirdingiz!");
     } catch (err) {
       switch (err.code) {
         case "auth/invalid-email":
-          toast.error("Invalid email!");
+          toast.error("bunday email royxatdan o'tmagan");
           break;
         case "auth/user-not-found":
-          toast.error("User not registered!");
+          toast.error("user royxatdan o'tmagan");
           break;
         case "auth/wrong-password":
-          toast.error("Incorrect password!");
+          toast.error("Noto‘g‘ri parol!");
           break;
         case "auth/too-many-requests":
-          toast.error("Too many attempts, try later!");
+          toast.error("Juda ko‘p urinish, keyinroq qayta urinib ko‘ring!");
           break;
         default:
-          toast.error("Something went wrong!");
+          toast.error("Nimadir xato ketdi!");
       }
     }
   };
@@ -70,7 +70,10 @@ const Login = () => {
         <div className="my-4 text-center text-red-500">{error.message}</div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex flex-col max-w-96 w-full gap-5 items-center">
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-full max-w-96 flex-col items-center gap-5"
+      >
         <FormInput
           type="email"
           name="email"
