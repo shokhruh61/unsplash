@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaDownload, FaHeart, FaMoon, FaSun } from "react-icons/fa";
 import { FcStackOfPhotos } from "react-icons/fc";
-import { NavLinks } from "./";
 import { useSelector } from "react-redux"; // ✅ Redux'dan like sonini olish
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase/firebaseConfig"; // ✅ Firebase autentifikatsiyasi uchun
+import { NavLinks } from "./";
 
-const themeFromLoaclStorage = () => {
+const themeFromLocalStorage = () => {
   return localStorage.getItem("theme") || "winter";
 };
 
 function Navbar() {
-  const [theme, setTheme] = useState(themeFromLoaclStorage());
+  const [theme, setTheme] = useState(themeFromLocalStorage());
   const likedImages = useSelector((state) => state.likedImages); // ✅ Like bosilgan rasmlar
+  const [user] = useAuthState(auth); // ✅ Foydalanuvchi ma'lumotlarini olish
 
   const toggleTheme = () => {
     const newTheme = theme === "winter" ? "dark" : "winter";
@@ -48,6 +51,8 @@ function Navbar() {
             <NavLinks />
           </ul>
         </div>
+
+        {/* ✅ Navbar End */}
         <div className="navbar-end flex items-center gap-5">
           <div className="indicator">
             <span className="badge badge-secondary badge-sm indicator-item">
@@ -67,6 +72,8 @@ function Navbar() {
               </button>
             </div>
           </Link>
+
+          {/* ✅ Theme Toggle */}
           <label className="swap swap-rotate">
             <input
               type="checkbox"
@@ -79,6 +86,22 @@ function Navbar() {
 
             <FaMoon className="swap-on h-6 w-6 fill-current" />
           </label>
+          {/* ✅ Profil rasmi */}
+          {user && user.photoURL ? (
+            <Link to="/profile">
+              <img
+                src={user.photoURL}
+                alt="Profile"
+                className="h-10 w-10 rounded-full border-2 border-purple-500"
+              />
+            </Link>
+          ) : (
+            <Link to="/profile">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-purple-500 bg-gray-300 text-gray-600">
+                ?
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </header>

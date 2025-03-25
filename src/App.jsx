@@ -1,14 +1,43 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Home, About, Contact, Likedimages } from "./pages";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
+import {
+  Home,
+  About,
+  Contact,
+  Likedimages,
+  ImageInfo,
+  Register,
+  Login,
+} from "./pages";
 import MainLayout from "./layouts/MainLayout";
 import { action as HomeAction } from "./pages/Home";
 import { ToastContainer } from "react-toastify";
+import Profile from "./pages/Profile";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./firebase/firebaseConfig"; // ✅ Firebase auth import
 
 function App() {
+  const [user, loading] = useAuthState(auth);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
   const routes = createBrowserRouter([
     {
       path: "/",
-      element: <MainLayout />,
+      element: user ? (
+        <MainLayout />
+      ) : (
+        <Navigate to={auth.currentUser ? "/login" : "/register"} />
+      ),
       children: [
         {
           index: true,
@@ -27,7 +56,25 @@ function App() {
           path: "liked-images",
           element: <Likedimages />,
         },
+        {
+          path: "imageInfo/:id",
+          element: <ImageInfo />,
+        },
+        {
+          path: "profile",
+          element: <Profile />,
+        },
       ],
+    },
+    {
+      path: "/register",
+      element: user ? <Navigate to="/" /> : <Register />,
+     
+    },
+    {
+      path: "/login",
+      element: user ? <Navigate to="/" /> : <Login />,
+      // ✅ Agar foydalanuvchi login qilgan bo‘lsa, login sahifasiga kira olmaydi
     },
   ]);
 
