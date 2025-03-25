@@ -36,7 +36,7 @@ function App() {
       element: user ? (
         <MainLayout />
       ) : (
-        <Navigate to={auth.currentUser ? "/login" : "/register"} />
+        <Navigate to={user ? "/login" : "/register"} />
       ),
       children: [
         {
@@ -69,12 +69,10 @@ function App() {
     {
       path: "/register",
       element: user ? <Navigate to="/" /> : <Register />,
-     
     },
     {
       path: "/login",
       element: user ? <Navigate to="/" /> : <Login />,
-      // ✅ Agar foydalanuvchi login qilgan bo‘lsa, login sahifasiga kira olmaydi
     },
   ]);
 

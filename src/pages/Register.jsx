@@ -1,120 +1,88 @@
 import React, { useEffect, useState } from "react";
-import { MdArrowBackIos } from "react-icons/md";
-import { Form, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, signInWithGoogle } from "../firebase/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FcGoogle } from "react-icons/fc";
+import FormInput from "../components/FormInput";
 
 const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [user, loading, error] = useAuthState(auth);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+  const { fullName, email, password } = formData;
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
-  const handlesubmit = (e) => {
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (fullName === "") {
-      toast.error("Full Name is required!");
-    } else if (password === "") {
-      toast.error("Password is required!");
-    } else if (password.length < 8) {
-      toast.error("Password must atleast be of 8 characters!");
-    } else if (email === "") {
-      toast.error("Email-id is required!");
-    } else {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) => {
-          console.log(userCredentials);
-        })
-        .catch((err) => {
-          if (err.code === "auth/email-already-in-use") {
-            toast.error("Email already registered, login to continue");
-          } else {
-            toast.error("Error occured, please try again");
-          }
-        });
+    if (!fullName || !email || !password)
+      return toast.error("All fields are required!");
+    if (password.length < 8)
+      return toast.error("Password must be at least 8 characters!");
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      toast.success("Registration successful!");
+    } catch (err) {
+      toast.error(
+        err.code == "auth/email-already-in-use"
+          ? "Email already registered!"
+          : "An error occurred!",
+      );
     }
   };
 
   useEffect(() => {
-    if (loading) return;
-    if (user) {
-      navigate("/about");
-    }
+    if (!loading && user) navigate("/");
   }, [user, loading, navigate]);
 
   return (
-    <div className="mx-auto max-w-[100%]">
-      <h1 className="mt-5 p-2 text-center text-2xl font-medium text-white">
-        Registration
-      </h1>
-      {error && <div className="my-4 text-center"> {error.message} </div>}
-      <Form
-        onSubmit={handlesubmit}
-        className="flex flex-col items-center justify-center"
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      <h1 className="text-2xl font-medium text-black">Register</h1>
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-full max-w-xs flex-col gap-4"
       >
-        <label className="relative">
-          <input
-            type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            className="xs:w-[360px] xs:h-[40px] mx-1 my-2 h-[30] w-[270px] rounded-full border-[1px] border-gray-400 px-6 py-3 outline-none transition duration-200 focus:border-purple-500 md:h-[50px] md:w-[450px]"
+        {["fullName", "Email", "Password"].map((field) => (
+          <FormInput
+            key={field}
+            type={field === "password" ? "password" : "text"}
+            name={field}
+            value={formData[field]}
+            onChange={handleChange}
+            placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+            className="h-12 w-full rounded-lg border px-4 outline-none focus:border-purple-500"
           />
-          <span className="input-text absolute left-0 top-5 mx-6 px-2 text-gray-500 transition duration-300">
-            {fullName ? "" : "Full Name"}
-          </span>
-        </label>
-        <label className="relative">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="xs:w-[360px] xs:h-[40px] mx-1 my-2 h-[30] w-[270px] rounded-full border-[1px] border-gray-400 px-6 py-3 outline-none transition duration-200 focus:border-purple-500 md:h-[50px] md:w-[450px]"
-          />
-          <span className="input-text absolute left-0 top-5 mx-6 px-2 text-gray-500 transition duration-300">
-            {email ? "" : "Email"}
-          </span>
-        </label>
-        <label className="relative">
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="xs:w-[360px] xs:h-[40px] mx-1 my-2 h-[30] w-[270px] rounded-full border-[1px] border-gray-400 px-6 py-3 outline-none transition duration-200 focus:border-purple-500 md:h-[50px] md:w-[450px]"
-          />
-          <span className="input-text absolute left-0 top-5 mx-6 w-[80px] px-2 text-gray-500 transition duration-300">
-            {password ? "" : "Password"}
-          </span>
-        </label>
+        ))}
         <button
           type="submit"
-          className="xs:w-[360px] xs:h-[40px] mt-5 h-[30] w-[270px] rounded-full bg-purple-500 p-2 text-base text-white hover:bg-purple-700 md:mt-4 md:h-[50px] md:w-[450px] md:p-0"
+          className="h-12 w-full rounded-lg bg-purple-700 text-white"
         >
-          Submit
+          Register
         </button>
-        <ToastContainer />
-      </Form>
-      <div className="flex flex-col items-center">
-        <button
-          type="submit"
-          className="xs:w-[360px] xs:h-[40px] mt-5 flex h-[30] w-[270px] items-center justify-center gap-2 rounded-full border-[2px] border-gray-200 bg-white p-2 text-base font-medium text-black md:mt-4 md:h-[50px] md:w-[450px] md:p-0"
-          onClick={() => signInWithGoogle()}
-        >
-          <FcGoogle className="h-9 w-9" />
-          With Google
-        </button>
-
-        <div className="mb-5 mt-2 text-gray-600">
-          Already have an account?
-          <Link to={"/contact"}>
-            <span className="font-medium text-purple-500">Login</span>
-          </Link>
-        </div>
-      </div>
+      </form>
+      <ToastContainer />
+      <button
+        onClick={signInWithGoogle}
+        className="mt-4 flex h-12 w-full max-w-xs items-center justify-center gap-2 rounded-lg bg-gray-100 font-medium text-black"
+      >
+        <FcGoogle className="h-6 w-6" />
+        Sign in with Google
+      </button>
+      <p className="mt-2 text-gray-600">
+        Sizni accountingiz bormi?
+        <Link to="/login" className="text-purple-500">
+          Login
+        </Link>
+      </p>
     </div>
   );
 };

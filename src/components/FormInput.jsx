@@ -11,10 +11,9 @@ function FormInput({ type, placeholder, name }) {
         name={name}
       />
       {placeholder == "search" && <FaSearch className="h-4 w-4" />}
-      {placeholder == "name" && <FaUser className="h-4 w-4" />}
-      {placeholder == "email" && <MdEmail className="h-4 w-4" />}
-      {placeholder == "password" && <FaKey className="h-4 w-4" />}
-      {placeholder == "Re password" && <FaKey className="h-4 w-4" />}
+      {placeholder == "FullName" && <FaUser className="h-4 w-4" />}
+      {placeholder == "Email" && <MdEmail className="h-4 w-4" />}
+      {placeholder == "Password" && <FaKey className="h-4 w-4" />}
     </label>
   );
 }

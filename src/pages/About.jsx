@@ -1,12 +1,9 @@
-import React from "react";
-import Register from "./Register";
+import React from 'react'
 
 function About() {
   return (
-    <div>
-      <Register />
-    </div>
-  );
+    <div>About</div>
+  )
 }
 
-export default About;
+export default About
