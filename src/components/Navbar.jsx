@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaDownload, FaHeart, FaMoon, FaSun } from "react-icons/fa";
-import { FcStackOfPhotos } from "react-icons/fc";
+import { FaUnsplash } from "react-icons/fa6";
+
 import { useSelector } from "react-redux"; // ✅ Redux'dan like sonini olish
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/firebaseConfig"; // ✅ Firebase autentifikatsiyasi uchun
@@ -31,12 +32,12 @@ function Navbar() {
       <div className="container navbar mx-auto max-w-[1440px]">
         <div className="navbar-start">
           <Link to={"/"} className="hidden md:flex">
-            <FcStackOfPhotos className="h-10 w-10" />
+            <FaUnsplash className="h-10 w-10" />
           </Link>
 
           <div className="dropdown md:hidden">
             <div tabIndex={0} role="button">
-              <FcStackOfPhotos className="h-10 w-10" />
+              <FaUnsplash className="h-10 w-10" />
             </div>
             <ul
               tabIndex={0}
@@ -88,7 +89,7 @@ function Navbar() {
           </label>
           {/* ✅ Profil rasmi */}
           {user && user.photoURL ? (
-            <Link className=" dropdown" to="/profile">
+            <Link className="dropdown" to="/profile">
               <img
                 src={user.photoURL}
                 alt="Profile"
@@ -102,7 +103,6 @@ function Navbar() {
               </div>
             </Link>
           )}
-        
         </div>
       </div>
     </header>

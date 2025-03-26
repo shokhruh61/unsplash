@@ -36,19 +36,19 @@ const Login = () => {
     } catch (err) {
       switch (err.code) {
         case "auth/invalid-email":
-          toast.error("bunday email royxatdan o'tmagan");
+          confirm("bunday email royxatdan o'tmagan");
           break;
         case "auth/user-not-found":
-          toast.error("user royxatdan o'tmagan");
+          confirm("user royxatdan o'tmagan");
           break;
         case "auth/wrong-password":
-          toast.error("Noto‘g‘ri parol!");
+          confirm("Noto‘g‘ri parol!");
           break;
         case "auth/too-many-requests":
-          toast.error("Juda ko‘p urinish, keyinroq qayta urinib ko‘ring!");
+          confirm("Juda ko‘p urinish, keyinroq qayta urinib ko‘ring!");
           break;
         default:
-          toast.error("Nimadir xato ketdi!");
+          confirm("Nimadir xato ketdi!");
       }
     }
   };

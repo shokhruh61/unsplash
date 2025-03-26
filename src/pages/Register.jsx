@@ -3,7 +3,7 @@ import { Form, Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, signInWithGoogle } from "../firebase/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FcGoogle } from "react-icons/fc";
 
@@ -17,24 +17,23 @@ const Register = () => {
   const handlesubmit = (e) => {
     e.preventDefault();
     if (fullName === "") {
-      toast.error("to'liq ismingizni kiriting");
+      confirm("to'liq ismingizni kiriting");
     } else if (password === "") {
-      toast.error("parolni kriting");
+      confirm("parolni kriting");
     } else if (password.length < 8) {
-      toast.error("parol eng kamida 8ta belgidan iborat bolsin!");
+      confirm("parol eng kamida 8ta belgidan iborat bolsin!");
     } else if (email === "") {
-      toast.error("email manizilni kriting!");
+      confirm("email manizilni kriting!");
     } else {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
           console.log(userCredentials);
         })
         .catch((err) => {
-          console.log("Firebase error:", err.code, err.message); // Xatoni konsolga chiqarish
           if (err.code === "auth/email-already-in-use") {
-            toast.error("Email already registered, login to continue");
+            confirm("Email allaqachon ro‘yxatdan o‘tgan!");
           } else {
-            toast.error("Error occured, please try again");
+            confirm("Xatolik yuz berdi, iltimos, qayta urinib ko‘ring");
           }
         });
     }
