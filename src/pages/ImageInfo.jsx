@@ -27,7 +27,6 @@ const ImageInfo = () => {
         {image.alt_description || "No title"}
       </h1>
       <p>Muallif: {image.user.name}</p>
-      <p>Likes: {image.likes} ❤️</p>
       <a
         href={image.links.download + "&force=true"}
         className="rounded bg-blue-600 px-4 py-2 text-white"
