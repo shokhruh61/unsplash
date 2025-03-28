@@ -1,121 +1,63 @@
-import React, { useEffect, useState } from "react";
-import { Form, Link, useNavigate } from "react-router-dom";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, signInWithGoogle } from "../firebase/firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect } from "react";
+import { Form, Link, useNavigate } from "react-router-dom"; // 🔹 useNavigate import
+import { FormInput } from "../components";
 import { FcGoogle } from "react-icons/fc";
+import { useAuth } from "../hooks/useRegister";
+import { useGlobalContext } from "../hooks/useGlobalContext";
 
-const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [user, loading, error] = useAuthState(auth);
-  const navigate = useNavigate();
+function Register() {
+  const { signInOrRegisterWithGoogle } = useAuth();
+  const { user } = useGlobalContext();
+  const navigate = useNavigate(); // 🔹 navigate ishlatish
 
-  const handlesubmit = (e) => {
-    e.preventDefault();
-    if (fullName === "") {
-      confirm("to'liq ismingizni kiriting");
-    } else if (password === "") {
-      confirm("parolni kriting");
-    } else if (password.length < 8) {
-      confirm("parol eng kamida 8ta belgidan iborat bolsin!");
-    } else if (email === "") {
-      confirm("email manizilni kriting!");
-    } else {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) => {
-          console.log(userCredentials);
-        })
-        .catch((err) => {
-          if (err.code === "auth/email-already-in-use") {
-            confirm("Email allaqachon ro‘yxatdan o‘tgan!");
-          } else {
-            confirm("Xatolik yuz berdi, iltimos, qayta urinib ko‘ring");
-          }
-        });
-    }
-  };
-
+  // 🔹 Agar user oldindan mavjud bo'lsa, avtomatik home pagega o'tkazish
   useEffect(() => {
-    if (loading) return;
     if (user) {
       navigate("/");
     }
-  }, [user, loading, navigate]);
+  }, [user, navigate]);
 
   return (
-    <div className="mx-auto max-w-[100%]">
-      <h1 className="mt-5 p-2 text-center text-2xl font-medium text-white">
-        Registration
-      </h1>
-      {error && <div className="my-4 text-center"> {error.message} </div>}
-      <Form
-        onSubmit={handlesubmit}
-        className="flex flex-col items-center justify-center"
-      >
-        <label className="relative">
-          <input
-            type="text"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            className="xs:w-[360px] xs:h-[40px] mx-1 my-2 h-[30] w-[270px] rounded-full border-[1px] border-gray-400 px-6 py-3 outline-none transition duration-200 focus:border-purple-500 md:h-[50px] md:w-[450px]"
-          />
-          <span className="input-text absolute left-0 top-5 mx-6 px-2 text-gray-500 transition duration-300">
-            {fullName ? "" : "Full Name"}
-          </span>
-        </label>
-        <label className="relative">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="xs:w-[360px] xs:h-[40px] mx-1 my-2 h-[30] w-[270px] rounded-full border-[1px] border-gray-400 px-6 py-3 outline-none transition duration-200 focus:border-purple-500 md:h-[50px] md:w-[450px]"
-          />
-          <span className="input-text absolute left-0 top-5 mx-6 px-2 text-gray-500 transition duration-300">
-            {email ? "" : "Email"}
-          </span>
-        </label>
-        <label className="relative">
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="xs:w-[360px] xs:h-[40px] mx-1 my-2 h-[30] w-[270px] rounded-full border-[1px] border-gray-400 px-6 py-3 outline-none transition duration-200 focus:border-purple-500 md:h-[50px] md:w-[450px]"
-          />
-          <span className="input-text absolute left-0 top-5 mx-6 w-[80px] px-2 text-gray-500 transition duration-300">
-            {password ? "" : "Password"}
-          </span>
-        </label>
-        <button
-          type="submit"
-          className="xs:w-[360px] xs:h-[40px] mt-5 h-[30] w-[270px] rounded-full bg-purple-500 p-2 text-base text-white hover:bg-purple-700 md:mt-4 md:h-[50px] md:w-[450px] md:p-0"
-        >
-          Submit
-        </button>
-        <ToastContainer />
-      </Form>
-      <div className="flex flex-col items-center">
-        <button
-          type="submit"
-          className="xs:w-[360px] xs:h-[40px] mt-5 flex h-[30] w-[270px] items-center justify-center gap-2 rounded-full border-[2px] border-gray-200 bg-white p-2 text-base font-medium text-black md:mt-4 md:h-[50px] md:w-[450px] md:p-0"
-          onClick={() => signInWithGoogle()}
-        >
-          <FcGoogle className="h-9 w-9" />
-          With Google
-        </button>
+    <div className="mx-auto my-36 w-full max-w-[700px] rounded-xl border border-red-600 p-10 shadow-md shadow-gray-700 transition-all duration-300 hover:shadow-xl">
+      <Form method="post" className="mx-auto max-w-96">
+        <h1 className="my-3 text-center text-2xl font-bold">Register</h1>
 
-        <div className="mb-5 mt-2 text-gray-600">
-          Already have an account?
-          <Link to={"/login"}>
-            <span className="font-medium text-purple-500">Login</span>
+        <div className="flex flex-col gap-5">
+          <FormInput placeholder="Full Name" name="name" type="text" />
+          <FormInput placeholder="Email" name="email" type="email" />
+          <FormInput placeholder="Password" name="password" type="password" />
+          <FormInput
+            placeholder="Re Password"
+            name="repassword"
+            type="password"
+          />
+        </div>
+
+        <div className="my-4 flex flex-col gap-3 md:flex-row">
+          <button type="submit" className="btn btn-primary grow">
+            Register
+          </button>
+          <button
+            onClick={signInOrRegisterWithGoogle}
+            type="button"
+            className="btn btn-secondary grow"
+          >
+            Google
+            <FcGoogle />
+          </button>
+        </div>
+
+        <div className="mt-2 flex-col justify-between text-center md:mt-0 md:flex-row">
+          <Link
+            to={"/login"}
+            className="link link-primary text-lg text-white md:text-black"
+          >
+            you don't have account yet ?
           </Link>
         </div>
-      </div>
+      </Form>
     </div>
   );
-};
+}
 
 export default Register;

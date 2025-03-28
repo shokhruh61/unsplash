@@ -14,29 +14,21 @@ import {
 } from "./pages";
 import MainLayout from "./layouts/MainLayout";
 import { action as HomeAction } from "./pages/Home";
-import { ToastContainer } from "react-toastify";
 import Profile from "./pages/Profile";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase/firebaseConfig"; // ✅ Firebase auth import
+import ProtectedRoute from "./components/ProtectedRoutes";
+
+import { useGlobalContext } from "./hooks/useGlobalContext";
 
 function App() {
-  const [user, loading] = useAuthState(auth);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
+  const { user } = useGlobalContext();
 
   const routes = createBrowserRouter([
     {
       path: "/",
-      element: user ? (
-        <MainLayout />
-      ) : (
-        <Navigate to={user ? "/login" : "/register"} />
+      element: (
+        <ProtectedRoute user={user}>
+          <MainLayout />
+        </ProtectedRoute>
       ),
       children: [
         {
@@ -62,23 +54,26 @@ function App() {
         },
         {
           path: "profile",
-          element: <Profile />,
+          element: (
+            <ProtectedRoute user={user}>
+              <Profile />
+            </ProtectedRoute>
+          ),
         },
       ],
     },
     {
       path: "/register",
-      element: user ? <Navigate to="/" /> : <Register />,
+      element: <Register />,
     },
     {
       path: "/login",
-      element: user ? <Navigate to="/" /> : <Login />,
+      element: <Login />,
     },
   ]);
 
   return (
     <div>
-      <ToastContainer />
       <RouterProvider router={routes} />
     </div>
   );

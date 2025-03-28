@@ -4,8 +4,7 @@ import { FaDownload, FaHeart, FaMoon, FaSun } from "react-icons/fa";
 import { FaUnsplash } from "react-icons/fa6";
 
 import { useSelector } from "react-redux"; // ✅ Redux'dan like sonini olish
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase/firebaseConfig"; // ✅ Firebase autentifikatsiyasi uchun
+import { useGlobalContext } from "../hooks/useGlobalContext";
 import { NavLinks } from "./";
 
 const themeFromLocalStorage = () => {
@@ -13,9 +12,9 @@ const themeFromLocalStorage = () => {
 };
 
 function Navbar() {
+  const { user } = useGlobalContext();
   const [theme, setTheme] = useState(themeFromLocalStorage());
   const likedImages = useSelector((state) => state.likedImages); // ✅ Like bosilgan rasmlar
-  const [user] = useAuthState(auth); // ✅ Foydalanuvchi ma'lumotlarini olish
 
   const toggleTheme = () => {
     const newTheme = theme === "winter" ? "dark" : "winter";
@@ -87,22 +86,35 @@ function Navbar() {
 
             <FaMoon className="swap-on h-6 w-6 fill-current" />
           </label>
-          {/* ✅ Profil rasmi */}
-          {user && user.photoURL ? (
-            <Link className="dropdown" to="/profile">
-              <img
-                src={user.photoURL}
-                alt="Profile"
-                className="h-10 w-10 rounded-full border-2 border-purple-500"
-              />
-            </Link>
-          ) : (
-            <Link to="/profile">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-purple-500 bg-gray-300 text-gray-600">
-                ?
+          <div className="dropdown dropdown-end flex items-center gap-4">
+            {user.displayName.split(" ")[0]}
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-8 cursor-pointer rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+                <img src={user.photoURL} alt={user.displaynaem + ""} />
               </div>
-            </Link>
-          )}
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
+            >
+              <li>
+                <a className="justify-between">
+                  Profile
+                  <span className="badge">New</span>
+                </a>
+              </li>
+              <li>
+                <a>Settings</a>
+              </li>
+              <li>
+                <a>Logout</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </header>
