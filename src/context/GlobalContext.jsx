@@ -13,12 +13,14 @@ const changeState = (state, action) => {
       return { ...state, user: null };
 
     default:
-      return state; // Default case qo'shildi
+      return state;
   }
 };
 
 export function GlobalContextProvider({ children }) {
-  const [state, dispatch] = useReducer(changeState, { user: false });
+  const [state, dispatch] = useReducer(changeState, {
+    user: false,
+  });
 
   return (
     <GlobalContext.Provider value={{ ...state, dispatch }}>

@@ -13,8 +13,8 @@ function LikedImages() {
 
       {likedImages.length === 0 ? (
         <div className="my-7 text-center">
-          <p className="text-gray-500">No liked images yet.</p>
-          <Link className="rounded bg-blue-600 px-4 py-2 text-white" to="/">
+          <p className="text-gray-500 mb-5">No liked images yet.</p>
+          <Link className="rounded bg-blue-600 px-4 py-2 my-10 text-white" to="/">
             Go to Home
           </Link>
         </div>

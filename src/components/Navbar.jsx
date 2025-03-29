@@ -78,14 +78,13 @@ function Navbar() {
             <input
               type="checkbox"
               className="theme-controller"
-              value="synthwave"
-              onClick={toggleTheme}
+              checked={theme === "dark"}
+              onChange={toggleTheme}
             />
-
             <FaSun className="swap-off h-6 w-6 fill-current" />
-
             <FaMoon className="swap-on h-6 w-6 fill-current" />
           </label>
+
           <div className="dropdown dropdown-end flex items-center gap-4">
             {user.displayName.split(" ")[0]}
             <div
@@ -94,7 +93,7 @@ function Navbar() {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-8 cursor-pointer rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
-                <img src={user.photoURL} alt={user.displaynaem + ""} />
+                <img src={user.PhotoURL} alt={user.displayName + ""} />
               </div>
             </div>
             <ul

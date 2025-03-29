@@ -50,7 +50,7 @@ const ImageCard = ({ image }) => {
             src={image.user.profile_image.medium}
             alt={image.user.name}
           />
-          <span className="text-sm text-black dark:text-white sm:text-base">
+          <span className="text-sm text-black sm:text-base dark:text-white">
             {image.user.name}
           </span>
         </div>
