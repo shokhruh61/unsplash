@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { Form, Link, useNavigate } from "react-router-dom"; // 🔹 useNavigate import
 import { FormInput } from "../components";
 import { FcGoogle } from "react-icons/fc";
-import { useAuth } from "../hooks/useRegister";
+import { useRegister } from "../hooks/useRegister";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 
 function Register() {
-  const { signInOrRegisterWithGoogle } = useAuth();
+  const { registerWithGoogle } = useRegister();
   const { user } = useGlobalContext();
   const navigate = useNavigate(); // 🔹 navigate ishlatish
 
@@ -38,7 +38,7 @@ function Register() {
             Register
           </button>
           <button
-            onClick={signInOrRegisterWithGoogle}
+            onClick={registerWithGoogle}
             type="button"
             className="btn btn-secondary grow"
           >

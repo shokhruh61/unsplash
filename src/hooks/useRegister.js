@@ -2,13 +2,11 @@ import { toast } from "react-toastify";
 import { auth } from "../firebase/firebaseConfig";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useGlobalContext } from "./useGlobalContext";
-import { useNavigate } from "react-router-dom"; // 🔹 navigate qo‘shildi
 
-export const useAuth = () => {
+export const useRegister = () => {
   const { dispatch } = useGlobalContext();
-  const navigate = useNavigate(); // 🔹 Sahifaga yo‘naltirish uchun
 
-  const signInOrRegisterWithGoogle = async () => {
+  const registerWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
@@ -22,15 +20,12 @@ export const useAuth = () => {
         };
 
         dispatch({ type: "LOGIN", payload: user });
-        localStorage.setItem("user", JSON.stringify(user)); // 🔹 Foydalanuvchini saqlash
-
         toast.success(`Welcome, ${user.displayName}!`);
-        navigate("/"); // 🔹 Home sahifaga yo‘naltirish
       }
     } catch (error) {
       toast.error(error.message);
     }
   };
 
-  return { signInOrRegisterWithGoogle };
+  return { registerWithGoogle };
 };
