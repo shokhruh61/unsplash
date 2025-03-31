@@ -14,7 +14,7 @@ function Home() {
   const [search, setSearch] = useState("");
 
   const { data, isPending } = useFetch(
-    `https://api.unsplash.com/search/photos?client_id=TfijlH2P6tfgB_kzepCuV_-ji3Pd7waZSo1Gx4SDBbE&query=${searchQuery}&page=${page}`,
+    `https://api.unsplash.com/search/photos?client_id=${import.meta.env.VITE_API_KEY}&query=${searchQuery}&page=${page}`,
   );
 
   useEffect(() => {
