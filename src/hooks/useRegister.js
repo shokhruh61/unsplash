@@ -22,7 +22,9 @@ export const useRegister = () => {
       dispatch({ type: "LOGIN", payload: user });
       toast.success(`Welcome ${user.displayName}`);
 
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      });
     } catch (error) {
       toast.error(error.message);
     }
@@ -33,14 +35,13 @@ export const useRegister = () => {
       if (user) {
         dispatch({ type: "LOGIN", payload: user });
         dispatch({ type: "AUTH_READY" });
-        navigate("/"); // Avtomatik yo‘naltirish
       } else {
-        dispatch({ type: "LOGOUT" }); // Foydalanuvchi chiqib ketganda logout qilish
+        dispatch({ type: "LOGOUT" });
       }
     });
 
-    return () => unsubscribe(); // Cleanup qilish
-  }, [dispatch, navigate]);
+    return () => unsubscribe();
+  }, [dispatch]);
 
   return { registerWithGoogle };
 };

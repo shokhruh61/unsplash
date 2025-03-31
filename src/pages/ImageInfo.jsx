@@ -11,7 +11,7 @@ const ImageInfo = () => {
     const fetchImage = async () => {
       try {
         const response = await fetch(
-          `https://api.unsplash.com/photos/${id}?client_id=${import.meta.env.VITE_API_KEY}`,
+          `https://api.unsplash.com/photos/${id}?client_id=TfijlH2P6tfgB_kzepCuV_-ji3Pd7waZSo1Gx4SDBbE`,
         );
         if (!response.ok) throw new Error("Rasm topilmadi!");
         const data = await response.json();
