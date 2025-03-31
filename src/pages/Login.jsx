@@ -1,10 +1,10 @@
-import React from "react";
 import { Form, Link } from "react-router-dom";
 import { FormInput } from "../components";
 import { FcGoogle } from "react-icons/fc";
 import { useRegister } from "../hooks/useRegister";
 function Login() {
   const { registerWithGoogle } = useRegister();
+
   return (
     <div className="mx-auto my-36 w-full max-w-[700px] rounded-xl border border-red-600 p-10 shadow-md shadow-gray-700 transition-all duration-300 hover:shadow-xl">
       <Form method="post" className="mx-auto max-w-96">

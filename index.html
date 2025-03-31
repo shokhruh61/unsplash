@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="winter">
+<!doctype html>
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <link favicon rel="icon" href="./src/assets/images/unsplash.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./src/styles/font.css" />
     <title>splash</title>
+    <script>
+      const theme = localStorage.getItem("theme") || "dracula";
+      document.documentElement.setAttribute("data-theme", theme);
+    </script>
   </head>
-  <body class="">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

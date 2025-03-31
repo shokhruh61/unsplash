@@ -24,7 +24,7 @@ const ImageCard = ({ image }) => {
   };
 
   return (
-    <div className="group relative w-full max-w-[400px] rounded-lg bg-white bg-opacity-5 p-3 shadow-lg">
+    <div className="group relative w-full max-w-[400px] rounded-lg bg-blue-600 bg-opacity-5 p-3 shadow-lg">
       <button
         onClick={handleLike}
         className="hover-icons absolute right-4 top-4"
@@ -50,7 +50,7 @@ const ImageCard = ({ image }) => {
             src={image.user.profile_image.medium}
             alt={image.user.name}
           />
-          <span className="text-sm text-black sm:text-base dark:text-white">
+          <span className="text-sm text-black sm:text-base">
             {image.user.name}
           </span>
         </div>

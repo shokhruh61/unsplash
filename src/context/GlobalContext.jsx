@@ -6,6 +6,12 @@ const changeState = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case "AUTH_READY":
+      return {
+        ...state,
+        authReady: true,
+      };
+
     case "LOGIN":
       return { ...state, user: payload };
 
@@ -20,6 +26,7 @@ const changeState = (state, action) => {
 export function GlobalContextProvider({ children }) {
   const [state, dispatch] = useReducer(changeState, {
     user: false,
+    authReady: false,
   });
 
   return (

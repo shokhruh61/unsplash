@@ -1,10 +1,16 @@
 import { toast } from "react-toastify";
 import { auth } from "../firebase/firebaseConfig";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { useGlobalContext } from "./useGlobalContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const useRegister = () => {
+  const { user, authReady } = useGlobalContext();
   const { dispatch } = useGlobalContext();
   const navigate = useNavigate();
 
@@ -14,14 +20,35 @@ export const useRegister = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      dispatch({ type: "LOGIN", payload: user }); // 🔥 Contextga userni yozamiz
-      toast.success(`welcome ${user.displayName}`);
+      dispatch({ type: "LOGIN", payload: user });
+      toast.success(`Welcome ${user.displayName}`);
 
-      navigate("/"); // 🔥 Home sahifaga o'tkazish
+      setTimeout(() => {
+        navigate("/");
+      }); // ✅ 0.5 soniya kutish
     } catch (error) {
       toast.error(error.message);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch({ type: "LOGIN", payload: user });
+        dispatch({ type: "AUTH_READY" });
+      } else {
+        dispatch({ type: "LOGOUT" });
+      }
+    });
+
+    return () => unsubscribe();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (authReady && user) {
+      navigate("/");
+    }
+  }, [authReady, user, navigate]);
 
   return { registerWithGoogle };
 };

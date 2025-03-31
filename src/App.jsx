@@ -11,15 +11,14 @@ import {
   ImageInfo,
   Register,
   Login,
+  Profile,
 } from "./pages";
 import MainLayout from "./layouts/MainLayout";
 import { useGlobalContext } from "./hooks/useGlobalContext";
 import ProtectedRoute from "./components/ProtectedRoutes";
-import Profile from "./pages/Profile";
 
 function App() {
   const { user } = useGlobalContext();
-
   const routes = createBrowserRouter([
     {
       path: "/",
@@ -40,8 +39,11 @@ function App() {
         },
       ],
     },
-    { path: "/register", element: user ? <Navigate to="/" /> : <Register /> },
-    { path: "/login", element: user ? <Navigate to="/" /> : <Login /> },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    { path: "/login", element: <Login /> },
   ]);
 
   return <RouterProvider router={routes} />;
