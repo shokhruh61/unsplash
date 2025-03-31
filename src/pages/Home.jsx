@@ -36,7 +36,6 @@ function Home() {
 
   return (
     <div className="container mx-auto px-4">
-      {/* Search Form */}
       <div className="my-5 flex justify-center">
         <form
           onSubmit={handleSubmit}
@@ -59,7 +58,6 @@ function Home() {
       {isPending && <h1 className="text-center text-xl">Loading...</h1>}
       {error && <div className="text-center text-red-500">Error: {error}</div>}
 
-      {/* Masonry Grid */}
       <Masonry
         breakpointCols={{ default: 4, 1024: 3, 768: 2, 576: 1 }}
         className="flex gap-4"
@@ -70,7 +68,6 @@ function Home() {
         ))}
       </Masonry>
 
-      {/* Load More Button */}
       <div className="my-10 flex justify-center">
         <button
           onClick={() => setPage((p) => p + 1)}
