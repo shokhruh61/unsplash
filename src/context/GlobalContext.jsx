@@ -25,8 +25,8 @@ const changeState = (state, action) => {
 
 export function GlobalContextProvider({ children }) {
   const [state, dispatch] = useReducer(changeState, {
-    user: false,
-    authReady: false,
+    user: true,
+    authReady: true,
   });
 
   return (

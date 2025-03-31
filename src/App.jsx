@@ -9,9 +9,7 @@ import {
   Contact,
   Likedimages,
   ImageInfo,
-  Register,
-  Login,
-  Profile,
+
 } from "./pages";
 import MainLayout from "./layouts/MainLayout";
 import { useGlobalContext } from "./hooks/useGlobalContext";
@@ -33,17 +31,13 @@ function App() {
           path: "profile",
           element: (
             <ProtectedRoute user={user}>
-              <Profile />
+           
             </ProtectedRoute>
           ),
         },
       ],
     },
-    {
-      path: "/register",
-      element: <Register />,
-    },
-    { path: "/login", element: <Login /> },
+   
   ]);
 
   return <RouterProvider router={routes} />;
