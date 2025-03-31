@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 export const useRegister = () => {
+  const { user, authReady } = useGlobalContext();
   const { dispatch } = useGlobalContext();
   const navigate = useNavigate();
 
@@ -42,6 +43,12 @@ export const useRegister = () => {
 
     return () => unsubscribe();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (authReady && user) {
+      navigate("/");
+    }
+  }, [authReady, user, navigate]);
 
   return { registerWithGoogle };
 };
