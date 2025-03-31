@@ -18,6 +18,12 @@ const changeState = (state, action) => {
     case "LOGOUT":
       return { ...state, user: null };
 
+    case "UPDATE_PHOTO": // ✅ Yangi rasmni global holatda saqlash
+      return {
+        ...state,
+        user: { ...state.user, photoURL: payload },
+      };
+
     default:
       return state;
   }
@@ -25,7 +31,7 @@ const changeState = (state, action) => {
 
 export function GlobalContextProvider({ children }) {
   const [state, dispatch] = useReducer(changeState, {
-    user: true,
+    user: false,
     authReady: true,
   });
 

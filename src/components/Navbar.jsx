@@ -1,20 +1,24 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaDownload, FaHeart, FaMoon, FaSun } from "react-icons/fa";
 import { FaUnsplash } from "react-icons/fa6";
-import { useSelector } from "react-redux"; // ✅ Redux'dan like sonini olish
-import { useGlobalContext } from "../hooks/useGlobalContext";
+import { useSelector } from "react-redux"; // ✅ Like sonini olish
+import { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 import { NavLinks } from "./";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
 
 function Navbar() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-  const { user, dispatch } = useGlobalContext();
-  const likedImages = useSelector((state) => state.likedImages); // ✅ Like bosilgan rasmlar
-  const navigate = useNavigate(); // ✅ Router navigatsiya
-
+  const { user } = useContext(GlobalContext);
+  const likedImages = useSelector((state) => state.likedImages);
+  const navigate = useNavigate();
+  const [profileImage, setProfileImage] = useState(
+    user?.photoURL ||
+      localStorage.getItem("userPhoto") ||
+      "https://picsum.photos/200/300",
+  );
   useEffect(() => {
     document.documentElement.setAttribute(
       "data-theme",
@@ -26,32 +30,27 @@ function Navbar() {
   const signOutUser = async () => {
     try {
       await signOut(auth);
-      dispatch({ type: "LOGOUT" });
-      navigate("/login"); // ✅ Logout bo‘lgandan keyin login sahifasiga yuborish
+      navigate("/login");
+      toast.success("Logged out successfully");
     } catch (error) {
       toast.error("Logout failed: " + error.message);
     }
   };
 
+  useEffect(() => {
+    const storedPhoto = localStorage.getItem("userPhoto");
+    if (storedPhoto) {
+      setProfileImage(storedPhoto);
+    }
+  }, []);
+
   return (
-    <header className="bg-base-200 fixed top-0 left-0 w-full shadow-md z-[1000]">
+    <header className="fixed left-0 top-0 z-[1000] w-full bg-base-200 shadow-md">
       <div className="container navbar mx-auto max-w-[1440px]">
         <div className="navbar-start">
           <Link to={"/"} className="hidden md:flex">
             <FaUnsplash className="h-10 w-10" />
           </Link>
-
-          <div className="dropdown md:hidden">
-            <div tabIndex={0} role="button">
-              <FaUnsplash className="h-10 w-10" />
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu z-[1] w-52 rounded-box bg-base-100 p-2 shadow"
-            >
-              <NavLinks />
-            </ul>
-          </div>
         </div>
         <div className="navbar-center hidden md:flex">
           <ul className="menu menu-horizontal rounded-box">
@@ -59,7 +58,6 @@ function Navbar() {
           </ul>
         </div>
 
-        {/* ✅ Navbar End */}
         <div className="navbar-end flex items-center gap-5">
           <div className="indicator">
             <span className="badge badge-secondary badge-sm indicator-item">
@@ -101,8 +99,9 @@ function Navbar() {
               >
                 <div className="w-8 cursor-pointer rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
                   <img
-                    src={user.photoURL || "https://picsum.photos/200/200"}
+                    src={profileImage}
                     alt="User"
+                    className="w-8 cursor-pointer rounded-full ring ring-primary ring-offset-2 ring-offset-base-100"
                   />
                 </div>
               </div>

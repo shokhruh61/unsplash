@@ -3,24 +3,24 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
-import {
-  Home,
-  About,
-  Contact,
-  Likedimages,
-  ImageInfo,
-
-} from "./pages";
+import { Home, About, Contact, Likedimages, ImageInfo } from "./pages";
 import MainLayout from "./layouts/MainLayout";
-import { useGlobalContext } from "./hooks/useGlobalContext";
 import ProtectedRoute from "./components/ProtectedRoutes";
+import Profile from "./pages/Profile";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import { useGlobalContext } from "./hooks/useGlobalContext";
 
 function App() {
   const { user } = useGlobalContext();
   const routes = createBrowserRouter([
     {
       path: "/",
-      element: user ? <MainLayout /> : <Navigate to="/login" />,
+      element: (
+        <ProtectedRoute user={user}>
+          <MainLayout />
+        </ProtectedRoute>
+      ),
       children: [
         { index: true, element: <Home /> },
         { path: "about", element: <About /> },
@@ -29,15 +29,18 @@ function App() {
         { path: "imageInfo/:id", element: <ImageInfo /> },
         {
           path: "profile",
-          element: (
-            <ProtectedRoute user={user}>
-           
-            </ProtectedRoute>
-          ),
+          element: <Profile />,
         },
       ],
     },
-   
+    {
+      path: "/register",
+      element: user ? <Navigate to={"/"} /> : <Register />,
+    },
+    {
+      path: "/login",
+      element: user ? <Navigate to={"/"} /> : <Login />,
+    },
   ]);
 
   return <RouterProvider router={routes} />;
