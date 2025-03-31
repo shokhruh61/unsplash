@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 export const useRegister = () => {
-  const { user, authReady } = useGlobalContext();
   const { dispatch } = useGlobalContext();
   const navigate = useNavigate();
 
@@ -23,9 +22,7 @@ export const useRegister = () => {
       dispatch({ type: "LOGIN", payload: user });
       toast.success(`Welcome ${user.displayName}`);
 
-      setTimeout(() => {
-        navigate("/");
-      }); // ✅ 0.5 soniya kutish
+      navigate("/");
     } catch (error) {
       toast.error(error.message);
     }
@@ -36,19 +33,14 @@ export const useRegister = () => {
       if (user) {
         dispatch({ type: "LOGIN", payload: user });
         dispatch({ type: "AUTH_READY" });
+        navigate("/"); // Avtomatik yo‘naltirish
       } else {
-        dispatch({ type: "LOGOUT" });
+        dispatch({ type: "LOGOUT" }); // Foydalanuvchi chiqib ketganda logout qilish
       }
     });
 
-    return () => unsubscribe();
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (authReady && user) {
-      navigate("/");
-    }
-  }, [authReady, user, navigate]);
+    return () => unsubscribe(); // Cleanup qilish
+  }, [dispatch, navigate]);
 
   return { registerWithGoogle };
 };
