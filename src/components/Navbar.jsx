@@ -48,10 +48,19 @@ function Navbar() {
     <header className="fixed left-0 top-0 z-[1000] w-full bg-base-200 shadow-md">
       <div className="container navbar mx-auto max-w-[1440px]">
         <div className="navbar-start">
+          <div className="dropdown dropdown-bottom block md:hidden">
+            <div tabIndex={0} role="button" className="btn m-1">
+              <FaUnsplash className="h-10 w-10" />
+            </div>
+            <ul className="dropdown-content menu z-[1] w-52 rounded-box bg-base-100 p-2 shadow">
+              <NavLinks />
+            </ul>
+          </div>
           <Link to={"/"} className="hidden md:flex">
             <FaUnsplash className="h-10 w-10" />
           </Link>
         </div>
+
         <div className="navbar-center hidden md:flex">
           <ul className="menu menu-horizontal rounded-box">
             <NavLinks />

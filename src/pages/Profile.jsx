@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { GlobalContext } from "../context/GlobalContext";
-import { signOut } from "firebase/auth"; 
+import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 const Profile = () => {
   const navigate = useNavigate();
   const { user, dispatch } = useContext(GlobalContext);
@@ -14,8 +14,8 @@ const Profile = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const imageData = reader.result;
-        setImage(imageData); 
-        localStorage.setItem("userPhoto", imageData); 
+        setImage(imageData);
+        localStorage.setItem("userPhoto", imageData);
       };
       reader.readAsDataURL(file);
     }
@@ -34,16 +34,16 @@ const Profile = () => {
     <div className="flex min-h-screen flex-col items-center bg-gray-900 p-6 text-white">
       <div className="w-full max-w-4xl rounded-lg bg-gray-800 p-6 shadow-md">
         <div className="flex flex-col items-center gap-6 sm:flex-row">
-          <div className="relative">
-            <img
-              className="h-32 w-32 rounded-full border-4 border-purple-500"
-              src={
-                user?.photoURL ||
-                localStorage.getItem("userPhoto") ||
-                "https://picsum.photos/200/300"
-              }
-              alt="Profile"
-            />
+          <div className="avatar">
+            <div className="w-24 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+              <img
+                src={
+                  user?.photoURL ||
+                  localStorage.getItem("userPhoto") ||
+                  "https://picsum.photos/200/300"
+                }
+              />
+            </div>
           </div>
           <div className="flex w-full flex-col gap-4">
             <div className="text-lg font-semibold">
